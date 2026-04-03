@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-04-03
+
+### Fixed
+- 修复 `.gitignore` 规则过宽导致 `cmd/proxyd/main.go` 未被纳入仓库的问题
+- 修复 `main.version` 注入缺失，恢复 Dockerfile 和 ARM 构建脚本的版本注入兼容性
+- 修复设备端构建脚本中管理员密码变量未展开的问题
+- 调整 GitHub Actions 镜像发布到 GHCR，避免首发依赖额外 Docker Hub secrets
+
 ## [1.0.0] - 2026-04-03
 
 ### Added

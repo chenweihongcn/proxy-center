@@ -1,6 +1,6 @@
 #!/bin/sh
 # 在 iStoreOS 上直接运行此脚本来构建 proxy-center
-# Usage: bash /tmp/build-on-device.sh
+# Usage: sh /tmp/build-on-device.sh
 
 set -e
 
@@ -123,7 +123,7 @@ elif [ "$HAS_DOCKER" = true ]; then
     
     # 检查是否有 Dockerfile，如果没有则创建内联版本
     if [ ! -f "Dockerfile" ]; then
-    cat > /tmp/Dockerfile.proxy << 'DOCKERFILE'
+    cat > /tmp/Dockerfile.proxy << DOCKERFILE
 FROM golang:1.23-alpine AS builder
 WORKDIR /src
 COPY go.mod go.sum* ./
@@ -161,7 +161,7 @@ echo ""
 
 # 创建 docker-compose.yml 如果没有
 if [ "$HAS_DOCKER" = true ]; then
-    cat > "$INSTALL_DIR/docker-compose.yml" << 'COMPOSE'
+        cat > "$INSTALL_DIR/docker-compose.yml" << COMPOSE
 version: '3.8'
 services:
   proxy-center:
@@ -188,7 +188,7 @@ COMPOSE
 fi
 
 # 创建 OpenWrt procd init 脚本
-cat > /etc/init.d/proxy-center << 'INITD'
+cat > /etc/init.d/proxy-center << INITD
 #!/bin/sh /etc/rc.common
 START=99
 STOP=10

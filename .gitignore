@@ -7,7 +7,8 @@
 *.o
 *.a
 *.out
-proxyd
+/proxyd
+/proxyd.exe
 
 # Data & Logs
 data/
