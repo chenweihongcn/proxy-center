@@ -7,6 +7,7 @@ set -e
 INSTALL_DIR="/opt/proxy-center"
 DATA_DIR="$INSTALL_DIR/data"
 SRC_DIR="/tmp/proxy-center-src"
+ADMIN_PASS="${PROXY_ADMIN_PASS:-}"
 
 echo "============================================"
 echo " proxy-center 设备端构建脚本"
@@ -20,6 +21,20 @@ run_compose() {
     else
         docker-compose "$@"
     fi
+}
+
+generate_password() {
+    if command -v openssl >/dev/null 2>&1; then
+        openssl rand -base64 18 | tr -d '=+/\n' | cut -c1-20
+        return 0
+    fi
+
+    if [ -r /dev/urandom ]; then
+        tr -dc 'A-Za-z0-9' </dev/urandom | head -c 20
+        return 0
+    fi
+
+    date +%s | sha256sum | cut -c1-20
 }
 
 # 检测可用的构建方式
@@ -50,6 +65,10 @@ if [ "$HAS_DOCKER" = false ] && [ "$HAS_GO" = false ]; then
 fi
 
 echo ""
+
+if [ -z "$ADMIN_PASS" ]; then
+    ADMIN_PASS=$(generate_password)
+fi
 
 # 创建目录
 mkdir -p "$INSTALL_DIR" "$DATA_DIR" "$SRC_DIR"
@@ -124,7 +143,7 @@ ENV PROXY_HTTP_LISTEN=:8080
 ENV PROXY_SOCKS_LISTEN=:1080
 ENV PROXY_WEB_LISTEN=:8090
 ENV PROXY_ADMIN_USER=admin
-ENV PROXY_ADMIN_PASS=change-me-now
+ENV PROXY_ADMIN_PASS=${ADMIN_PASS}
 EXPOSE 8080 1080 8090
 ENTRYPOINT ["proxyd"]
 DOCKERFILE
@@ -158,7 +177,7 @@ services:
     environment:
       PROXY_DB_PATH: /data/proxy-center.db
       PROXY_ADMIN_USER: admin
-      PROXY_ADMIN_PASS: change-me-now
+            PROXY_ADMIN_PASS: ${ADMIN_PASS}
       PROXY_LOG_DOMAINS: "true"
     logging:
       driver: "json-file"
@@ -188,7 +207,7 @@ start_service() {
         PROXY_SOCKS_LISTEN=":1080" \
         PROXY_WEB_LISTEN=":8090" \
         PROXY_ADMIN_USER="admin" \
-        PROXY_ADMIN_PASS="change-me-now" \
+        PROXY_ADMIN_PASS="${ADMIN_PASS}" \
         PROXY_LOG_DOMAINS="true"
     procd_set_param respawn 3600 5 0
     procd_set_param stdout 1
@@ -245,7 +264,7 @@ echo "   HTTP Proxy:   http://${DEVICE_IP}:8080"
 echo "   SOCKS5:       socks5://${DEVICE_IP}:1080"
 echo ""
 echo "   管理账号:     admin"
-echo "   默认密码:     change-me-now"
+echo "   管理密码:     ${ADMIN_PASS}"
 echo ""
 echo "⚠️  立即访问 Web UI 修改默认密码！"
 echo ""

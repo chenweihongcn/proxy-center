@@ -7,7 +7,7 @@ set -e
 VERSION="1.0.0"
 INSTALL_PATH="/opt/proxy-center"
 DATA_PATH="$INSTALL_PATH/data"
-ADMIN_PASS="${PROXY_ADMIN_PASS:-change-me-now-12345}"
+ADMIN_PASS="${PROXY_ADMIN_PASS:-}"
 COMPOSE_MODE=""
 
 run_compose() {
@@ -36,6 +36,20 @@ get_device_ip() {
   done
 
   ip -4 route get 1.1.1.1 2>/dev/null | awk '{for (i = 1; i <= NF; i++) if ($i == "src") {print $(i + 1); exit}}'
+}
+
+generate_password() {
+  if command -v openssl >/dev/null 2>&1; then
+    openssl rand -base64 18 | tr -d '=+/\n' | cut -c1-20
+    return 0
+  fi
+
+  if [ -r /dev/urandom ]; then
+    tr -dc 'A-Za-z0-9' </dev/urandom | head -c 20
+    return 0
+  fi
+
+  date +%s | sha256sum | cut -c1-20
 }
 
 echo "🚀 proxy-center quick start for iStoreOS"
@@ -70,6 +84,10 @@ fi
 
 if ! command -v git >/dev/null 2>&1; then
   echo "⚠️  Git not found, will use direct download"
+fi
+
+if [ -z "$ADMIN_PASS" ]; then
+  ADMIN_PASS=$(generate_password)
 fi
 
 echo "📁 Creating directories..."

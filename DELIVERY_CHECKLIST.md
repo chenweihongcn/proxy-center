@@ -134,7 +134,7 @@ sh istoreios-quick-start.sh
 📋 Quick reference:
    Web UI:       http://192.168.50.94:8090
    Username:     admin
-   Password:     change-me-now-12345
+  Password:     [自动生成]
    HTTP Proxy:   http://192.168.50.94:8080
    SOCKS5:       socks5://192.168.50.94:1080
 ```
