@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2026-04-03
+
+### Changed
+- CI 线路切换为仅执行测试与 lint（停止在 GitHub Actions 内做 Docker 构建与自动 Release）
+- 避免云端构建链路不稳定导致的持续失败，优先保障主干质量门禁可用
+
+### Deployment
+- 生产部署改为设备端构建与启动（使用 `deploy/istoreios-quick-start.sh` 或 `deploy/build-on-device.sh`）
+
 ## [1.0.3] - 2026-04-03
 
 ### Fixed
