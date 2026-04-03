@@ -88,6 +88,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Verify cross-build
+        run: |
+          go env -w GOFLAGS=-mod=mod
+          go mod tidy
+          echo "--- amd64 ---"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o /tmp/proxyd-amd64 ./cmd/proxyd
+          echo "--- arm64 ---"
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o /tmp/proxyd-arm64 ./cmd/proxyd
+          echo "Cross-build OK"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       
@@ -116,8 +131,6 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   release:
     name: Create Release
