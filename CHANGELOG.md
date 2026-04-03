@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-04-03
+
+### Fixed
+- 删除 `internal/proxy/http_proxy.go` 中三个从未调用的辅助函数（`stripPort`、`readLine`、`formatAddress`），消除 lint `unused` 错误
+- 同步移除因此变为孤立的 `bufio` 和 `fmt` 导入
+
 ## [1.0.2] - 2026-04-03
 
 ### Fixed

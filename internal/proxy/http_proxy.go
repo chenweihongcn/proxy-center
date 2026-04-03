@@ -1,11 +1,9 @@
 package proxy
 
 import (
-	"bufio"
 	"context"
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -297,33 +295,4 @@ func (c *countingReadCloser) Close() error {
 	return c.ReadCloser.Close()
 }
 
-func stripPort(hostport string) string {
-	h := hostport
-	if strings.Contains(h, "]:") {
-		if u, err := url.Parse("http://" + h); err == nil {
-			return u.Hostname()
-		}
-	}
-	if strings.Contains(h, ":") {
-		hh, _, err := net.SplitHostPort(h)
-		if err == nil {
-			return hh
-		}
-	}
-	return h
-}
 
-func readLine(br *bufio.Reader) (string, error) {
-	line, err := br.ReadString('\n')
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimSpace(line), nil
-}
-
-func formatAddress(host string, port int) string {
-	if strings.Contains(host, ":") && !strings.HasPrefix(host, "[") {
-		return fmt.Sprintf("[%s]:%d", host, port)
-	}
-	return fmt.Sprintf("%s:%d", host, port)
-}
