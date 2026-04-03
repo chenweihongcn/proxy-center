@@ -1,0 +1,53 @@
+# Build outputs
+/build
+/dist
+*.exe
+*.dll
+*.so
+*.o
+*.a
+*.out
+proxyd
+
+# Data & Logs
+data/
+*.db
+*.db-*
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+vendor/
+go.sum.orig
+
+# SQLite
+*.db-journal
+*.db-wal
+
+# Docker
+.dockerignore
+
+# Test coverage
+*.cover
+coverage.out
+
+# Release
+release/
+*.tar.gz
+*.zip

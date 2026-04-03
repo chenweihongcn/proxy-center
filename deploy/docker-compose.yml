@@ -1,0 +1,24 @@
+services:
+  proxyd:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: proxy-center
+    restart: unless-stopped
+    environment:
+      PROXY_DB_PATH: /data/proxy-center.db
+      PROXY_HTTP_LISTEN: :8080
+      PROXY_SOCKS_LISTEN: :1080
+      PROXY_WEB_LISTEN: :8090
+      PROXY_ADMIN_USER: admin
+      PROXY_ADMIN_PASS: change-me-now
+      PROXY_EGRESS_MODE: direct
+      PROXY_EGRESS_POOL: ""
+      PROXY_HEALTH_TICK: 10s
+      PROXY_LOG_DOMAINS: "true"
+    ports:
+      - "8080:8080"
+      - "1080:1080"
+      - "8090:8090"
+    volumes:
+      - ../data:/data
