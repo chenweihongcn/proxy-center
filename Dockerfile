@@ -2,17 +2,17 @@
 # Multi-platform build support for linux/amd64 and linux/arm64
 FROM --platform=${BUILDPLATFORM} golang:1.23-alpine AS builder
 
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
 
+ENV GOPROXY="https://proxy.golang.org,direct"
+ENV GONOSUMDB="*"
+
 WORKDIR /src
 COPY . .
-RUN --mount=type=cache,target=/go/pkg/mod \
-    --mount=type=cache,target=/root/.cache/go-build \
-    GOFLAGS=-mod=mod CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
-    go build -trimpath -ldflags="-s -w -X main.version=dev" \
+RUN mkdir -p /out && \
+    CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
+    go build -mod=mod -trimpath -ldflags="-s -w -X main.version=dev" \
     -o /out/proxyd ./cmd/proxyd
 
 # Runtime image - use compatible base
