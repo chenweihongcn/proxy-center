@@ -80,7 +80,7 @@ CGO_ENABLED=0 go build -o proxyd ./cmd/proxyd
 首次启动会自动创建管理员账号：
 
 - 用户名：`admin`（可通过 `PROXY_ADMIN_USER` 覆盖）
-- 密码：`change-me-now`（可通过 `PROXY_ADMIN_PASS` 覆盖）
+- 密码：一键部署脚本默认自动生成；直接运行二进制/容器时默认 `change-me-now`（可通过 `PROXY_ADMIN_PASS` 覆盖）
   
 **⚠️ 强烈建议立即修改默认密码**
 

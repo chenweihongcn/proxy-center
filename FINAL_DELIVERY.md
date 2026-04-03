@@ -187,11 +187,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/chenweihongcn/proxy-center
 
 ### 推荐的 GitHub 设置
 
-1. **设置 Secrets** (用于 GitHub Actions):
-   ```
-   DOCKER_USERNAME: your-docker-username
-   DOCKER_PASSWORD: your-docker-password
-   ```
+1. **GitHub Actions 默认可直接发布到 GHCR**:
+   - 无需额外配置 Docker Hub Secrets
+   - 镜像地址: `ghcr.io/chenweihongcn/proxy-center`
+   - 如需额外同步到 Docker Hub，再单独添加对应 workflow/secrets
 
 2. **启用分支保护** (main):
    - 要求 PR 审查
