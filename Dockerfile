@@ -8,8 +8,8 @@ ARG TARGETOS
 ARG TARGETARCH
 
 WORKDIR /src
-COPY go.mod go.sum* ./
-RUN go env -w GOFLAGS=-mod=mod && go mod download
+COPY go.mod go.sum ./
+RUN go mod download
 
 COPY . .
 RUN --mount=type=cache,target=/go/pkg/mod \
