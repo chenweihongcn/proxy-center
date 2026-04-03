@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - 删除 `internal/proxy/http_proxy.go` 中三个从未调用的辅助函数（`stripPort`、`readLine`、`formatAddress`），消除 lint `unused` 错误
 - 同步移除因此变为孤立的 `bufio` 和 `fmt` 导入
+- Dockerfile 改用 `GOFLAGS=-mod=mod go mod download` 代替裸 `go mod download`，解决无 `go.sum` 时 Docker 构建失败问题
+- 升级全部 Node.js 20 弃用 Actions：`setup-go@v5`（test job）、`docker/*-action` 系列至最新版、`codecov-action@v5`、`softprops/action-gh-release@v2`（替换已归档的 `create-release@v1`）
 
 ## [1.0.2] - 2026-04-03
 
