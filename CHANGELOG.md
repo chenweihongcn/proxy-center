@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-04-03
+
+### Fixed
+- 调整 GitHub Actions 的依赖准备流程，允许在 runner 中自动整理模块依赖并生成缺失的 `go.sum` 条目
+- 修复缓存键仅依赖 `go.sum` 导致无 `go.sum` 仓库在 CI 中直接报错的问题
+- 升级 lint action 版本，降低后续 GitHub Actions 运行时兼容风险
+
 ## [1.0.1] - 2026-04-03
 
 ### Fixed
